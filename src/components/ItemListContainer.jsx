@@ -35,7 +35,7 @@ export const ItemListContainer = () => {
 
   if (loading) return "wait";
   return (
-    <Container className="mt-4 d-flex">
+    <Container className="mt-4 container-fluid">
       {items.map((i) => (
         <Card key={i.id} style={{ width: "18rem" }}>
           <Card.Img variant="top" src={i.pictureurl} height={190} />
@@ -43,7 +43,7 @@ export const ItemListContainer = () => {
             <Card.Title>{i.title}</Card.Title>
             <Card.Text>{i.description}</Card.Text>
             <Card.Text>{i.category}</Card.Text>
-            <Card.Text>{i.cc}</Card.Text>
+            <Card.Text>cc: {i.cc}</Card.Text>
             <Link to={`/item/${i.id}`}>
               <Button variant="primary">Ver</Button>
             </Link>

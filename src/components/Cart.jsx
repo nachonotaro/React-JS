@@ -47,7 +47,9 @@ export const Cart = () => {
 
   return (
     <Container>
-      <button onClick={reset}>Limpiar</button>
+      <button onClick={reset} class="btn btn-primary">
+        Limpiar
+      </button>
       {items.map((item) => {
         return (
           <div key={item.id}>
@@ -62,20 +64,43 @@ export const Cart = () => {
       <div>Total ${total}</div>
       <br />
       <form>
-        <div>
-          <label>Nombre</label>
-          <input value={buyer.name} name="name" onChange={handleChange} />
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">
+            Name
+          </label>
+          <input
+            name="name"
+            onChange={handleChange}
+            value={buyer.name}
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+          />
         </div>
-        <div>
-          <label>Telefono</label>
-          <input value={buyer.phone} name="phone" onChange={handleChange} />
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">
+            Phone
+          </label>
+          <input
+            value={buyer.phone}
+            name="phone"
+            onChange={handleChange}
+            class="form-control"
+          />
         </div>
-        <div>
-          <label>Email</label>
-          <input value={buyer.email} name="email" onChange={handleChange} />
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">
+            Email
+          </label>
+          <input
+            value={buyer.email}
+            name="email"
+            onChange={handleChange}
+            class="form-control"
+          />
         </div>
         {
-          <button type="button" onClick={sendOrder}>
+          <button type="button" class="btn btn-primary" onClick={sendOrder}>
             Comprar
           </button>
         }
