@@ -1,9 +1,15 @@
 import Container from "react-bootstrap/Container";
-import data from "../data/productos.json";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import {
+  getFirestore,
+  getDocs,
+  where,
+  query,
+  collection,
+} from "firebase/firestore";
 
 export const ItemListContainer = () => {
   const [items, setItems] = useState([]);
@@ -11,14 +17,18 @@ export const ItemListContainer = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    new Promise((resolve, reject) => setTimeout(resolve(data), 2000))
-      .then((response) => {
-        if (!id) {
-          setItems(response);
-        } else {
-          const filtered = response.filter((i) => i.category === id);
-          setItems(filtered);
-        }
+    const db = getFirestore();
+    const refcollection = !id
+      ? collection(db, "items")
+      : query(collection(db, "items"), where("category", "==", id));
+
+    getDocs(refcollection)
+      .then((snapshot) => {
+        setItems(
+          snapshot.docs.map((doc) => {
+            return { id: doc.id, ...doc.data() };
+          })
+        );
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -28,7 +38,7 @@ export const ItemListContainer = () => {
     <Container className="mt-4 d-flex">
       {items.map((i) => (
         <Card key={i.id} style={{ width: "18rem" }}>
-          <Card.Img variant="top" src={i.pictureurl} />
+          <Card.Img variant="top" src={i.pictureurl} height={190} />
           <Card.Body>
             <Card.Title>{i.title}</Card.Title>
             <Card.Text>{i.description}</Card.Text>
@@ -43,3 +53,15 @@ export const ItemListContainer = () => {
     </Container>
   );
 };
+
+{
+  /* <div className='card card-product container mt-5'>
+      <img src={pictureUrl} className='card-img-top mt-2' alt={title} />
+      <div className='card-body'>
+        <h5 className='card-title text-center'>{title}</h5>
+        <p className='card-text text-center fw-bold'>Precio: €{price}</p>
+        <p className='card-text text-center'>Stock disponible: {stock}</p>
+      </div>
+      <BtnDetalle path={`/item/${id}`} />
+    </div> */
+}
